@@ -1,0 +1,99 @@
+.card {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transition:
+            border-color 180ms ease,
+            transform 180ms ease;
+}
+
+.card:hover {
+    border-color: var(--primary);
+    transform: translateY(-0.25rem);
+}
+
+.agentLink {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.imageContainer {
+    display: grid;
+    width: 7rem;
+    height: 7rem;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--surface-light);
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.information {
+    display: grid;
+    min-width: 0;
+    gap: 0.4rem;
+}
+
+.information p {
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.information h2 {
+    overflow: hidden;
+    font-size: 1.4rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.information span {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.removeButton {
+    min-height: 2.75rem;
+    margin: 0 1.25rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.removeButton:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.removeButton:focus-visible,
+.agentLink:focus-visible {
+    outline: 0.2rem solid var(--primary);
+    outline-offset: 0.2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card {
+        transition: none;
+    }
+}

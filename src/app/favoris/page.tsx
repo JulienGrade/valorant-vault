@@ -1,25 +1,31 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 
-export const metadata = {
-    title: "Favoris",
-    description: "Retrouvez vos agents Valorant favoris.",
+import { FavoritesList } from "@/features/favorites/favorites-list";
+
+export const metadata: Metadata = {
+    title: "Mes favoris",
+    description:
+        "Retrouvez les agents Valorant enregistrés dans vos favoris.",
 };
 
 export default function FavoritesPage() {
     return (
-        <main id="main-content" className="container page-section">
-            <p className="eyebrow">Collection locale</p>
+        <main
+            id="main-content"
+            className="container page-section"
+        >
+            <header className="page-header">
+                <p className="eyebrow">Votre sélection</p>
 
-            <h1>Vos agents favoris.</h1>
+                <h1>Mes agents favoris</h1>
 
-            <p className="page-introduction">
-                Votre sélection est encore vide. Vous pourrez bientôt ajouter des
-                agents depuis le catalogue.
-            </p>
+                <p>
+                    Retrouvez rapidement les agents que vous souhaitez
+                    étudier ou jouer.
+                </p>
+            </header>
 
-            <Link className="button button--primary" href="/agents">
-                Découvrir les agents
-            </Link>
+            <FavoritesList />
         </main>
     );
 }

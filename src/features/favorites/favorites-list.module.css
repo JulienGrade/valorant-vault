@@ -1,0 +1,25 @@
+.loading {
+    min-height: 20rem;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.favorites {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.count {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, 22rem), 1fr)
+  );
+    gap: 1.5rem;
+}

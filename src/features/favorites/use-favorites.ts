@@ -55,7 +55,24 @@ function subscribeToFavorites(
     };
 }
 
+function subscribeToHydration(): () => void {
+    return () => undefined;
+}
+
+function getClientHydrationSnapshot(): boolean {
+    return true;
+}
+
+function getServerHydrationSnapshot(): boolean {
+    return false;
+}
+
 export function useFavorites() {
+    const isHydrated = useSyncExternalStore(
+        subscribeToHydration,
+        getClientHydrationSnapshot,
+        getServerHydrationSnapshot,
+    );
     const favorites = useSyncExternalStore(
         subscribeToFavorites,
         getFavoritesSnapshot,
@@ -93,5 +110,6 @@ export function useFavorites() {
         favorites,
         isFavorite,
         toggleFavorite,
+        isHydrated,
     };
 }
