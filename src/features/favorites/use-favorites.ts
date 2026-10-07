@@ -2,6 +2,8 @@
 
 import {
     useCallback,
+    useEffect,
+    useState,
     useSyncExternalStore,
 } from "react";
 
@@ -16,7 +18,8 @@ import {
 const EMPTY_FAVORITES: FavoriteAgent[] = [];
 
 let cachedValue: string | null | undefined;
-let cachedFavorites: FavoriteAgent[] = EMPTY_FAVORITES;
+let cachedFavorites: FavoriteAgent[] =
+    EMPTY_FAVORITES;
 
 function getFavoritesSnapshot(): FavoriteAgent[] {
     const storedValue = window.localStorage.getItem(
@@ -55,24 +58,20 @@ function subscribeToFavorites(
     };
 }
 
-function subscribeToHydration(): () => void {
-    return () => undefined;
-}
-
-function getClientHydrationSnapshot(): boolean {
-    return true;
-}
-
-function getServerHydrationSnapshot(): boolean {
-    return false;
-}
-
 export function useFavorites() {
-    const isHydrated = useSyncExternalStore(
-        subscribeToHydration,
-        getClientHydrationSnapshot,
-        getServerHydrationSnapshot,
-    );
+    const [isHydrated, setIsHydrated] =
+        useState(false);
+
+    useEffect(() => {
+        const timeout = window.setTimeout(() => {
+            setIsHydrated(true);
+        }, 0);
+
+        return () => {
+            window.clearTimeout(timeout);
+        };
+    }, []);
+
     const favorites = useSyncExternalStore(
         subscribeToFavorites,
         getFavoritesSnapshot,
@@ -89,15 +88,19 @@ export function useFavorites() {
 
     const toggleFavorite = useCallback(
         (agent: FavoriteAgent): void => {
-            const currentFavorites = getFavoritesSnapshot();
+            const currentFavorites =
+                getFavoritesSnapshot();
 
-            const alreadyFavorite = currentFavorites.some(
-                (favorite) => favorite.uuid === agent.uuid,
-            );
+            const alreadyFavorite =
+                currentFavorites.some(
+                    (favorite) =>
+                        favorite.uuid === agent.uuid,
+                );
 
             const nextFavorites = alreadyFavorite
                 ? currentFavorites.filter(
-                    (favorite) => favorite.uuid !== agent.uuid,
+                    (favorite) =>
+                        favorite.uuid !== agent.uuid,
                 )
                 : [...currentFavorites, agent];
 
@@ -108,8 +111,8 @@ export function useFavorites() {
 
     return {
         favorites,
+        isHydrated,
         isFavorite,
         toggleFavorite,
-        isHydrated,
     };
 }

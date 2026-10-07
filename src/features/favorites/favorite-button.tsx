@@ -13,6 +13,7 @@ export function FavoriteButton({
                                    agent,
                                }: FavoriteButtonProps) {
     const {
+        isHydrated,
         isFavorite,
         toggleFavorite,
     } = useFavorites();
@@ -25,6 +26,8 @@ export function FavoriteButton({
                 favorite ? styles.active : ""
             }`}
             type="button"
+            disabled={!isHydrated}
+            aria-busy={!isHydrated}
             aria-pressed={favorite}
             onClick={() => {
                 toggleFavorite(agent);

@@ -48,6 +48,12 @@
     outline-offset: 0.2rem;
 }
 
+.button:disabled {
+    cursor: wait;
+    opacity: 0.5;
+    transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .button {
         transition: none;

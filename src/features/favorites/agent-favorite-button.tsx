@@ -13,11 +13,16 @@ export function AgentFavoriteButton({
                                         agent,
                                     }: AgentFavoriteButtonProps) {
     const {
+        isHydrated,
         isFavorite,
         toggleFavorite,
     } = useFavorites();
 
     const favorite = isFavorite(agent.id);
+
+    const accessibleName = favorite
+        ? `Retirer ${agent.name} des favoris`
+        : `Ajouter ${agent.name} aux favoris`;
 
     return (
         <button
@@ -25,11 +30,9 @@ export function AgentFavoriteButton({
                 favorite ? styles.active : ""
             }`}
             type="button"
-            aria-label={
-                favorite
-                    ? `Retirer ${agent.name} des favoris`
-                    : `Ajouter ${agent.name} aux favoris`
-            }
+            disabled={!isHydrated}
+            aria-busy={!isHydrated}
+            aria-label={accessibleName}
             aria-pressed={favorite}
             title={
                 favorite

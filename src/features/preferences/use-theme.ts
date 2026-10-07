@@ -2,6 +2,7 @@
 
 import {
     useEffect,
+    useState,
     useSyncExternalStore,
 } from "react";
 
@@ -54,7 +55,10 @@ function subscribeToSystemTheme(
     mediaQuery.addEventListener("change", callback);
 
     return () => {
-        mediaQuery.removeEventListener("change", callback);
+        mediaQuery.removeEventListener(
+            "change",
+            callback,
+        );
     };
 }
 
@@ -69,17 +73,31 @@ function getServerSystemThemeSnapshot(): boolean {
 }
 
 export function useTheme() {
+    const [isHydrated, setIsHydrated] =
+        useState(false);
+
+    useEffect(() => {
+        const timeout = window.setTimeout(() => {
+            setIsHydrated(true);
+        }, 0);
+
+        return () => {
+            window.clearTimeout(timeout);
+        };
+    }, []);
+
     const preference = useSyncExternalStore(
         subscribeToTheme,
         getThemeSnapshot,
         getServerThemeSnapshot,
     );
 
-    const systemUsesDarkTheme = useSyncExternalStore(
-        subscribeToSystemTheme,
-        getSystemThemeSnapshot,
-        getServerSystemThemeSnapshot,
-    );
+    const systemUsesDarkTheme =
+        useSyncExternalStore(
+            subscribeToSystemTheme,
+            getSystemThemeSnapshot,
+            getServerSystemThemeSnapshot,
+        );
 
     const resolvedTheme: ResolvedTheme =
         preference === "system"
@@ -94,6 +112,7 @@ export function useTheme() {
     }, [resolvedTheme]);
 
     return {
+        isHydrated,
         preference,
         resolvedTheme,
         setPreference: saveThemePreference,

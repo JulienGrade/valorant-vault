@@ -127,6 +127,12 @@
     border: 0;
 }
 
+.option:has(input:disabled) {
+    cursor: wait;
+    opacity: 0.6;
+    transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .option {
         transition: none;

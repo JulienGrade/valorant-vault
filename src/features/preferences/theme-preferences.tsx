@@ -34,6 +34,7 @@ const THEME_OPTIONS: ThemeOption[] = [
 
 export function ThemePreferences() {
     const {
+        isHydrated,
         preference,
         resolvedTheme,
         setPreference,
@@ -43,6 +44,7 @@ export function ThemePreferences() {
         <section className={styles.panel}>
             <div className={styles.heading}>
                 <p className="eyebrow">Apparence</p>
+
                 <h2>Thème de l’application</h2>
 
                 <p>
@@ -69,6 +71,7 @@ export function ThemePreferences() {
                             name="theme"
                             value={option.value}
                             checked={preference === option.value}
+                            disabled={!isHydrated}
                             onChange={() => {
                                 setPreference(option.value);
                             }}
@@ -78,13 +81,17 @@ export function ThemePreferences() {
 
                         <span className={styles.optionContent}>
               <strong>{option.title}</strong>
+
               <span>{option.description}</span>
             </span>
                     </label>
                 ))}
             </fieldset>
 
-            <p className={styles.currentTheme} aria-live="polite">
+            <p
+                className={styles.currentTheme}
+                aria-live="polite"
+            >
                 Thème actuellement affiché :{" "}
                 <strong>
                     {resolvedTheme === "dark"
