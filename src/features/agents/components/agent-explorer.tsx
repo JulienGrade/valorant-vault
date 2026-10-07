@@ -5,6 +5,10 @@ import { useState } from "react";
 import { EmptyState } from "@/components/ui/empty-state";
 import { AgentGrid } from "@/features/agents/components/agent-grid";
 import type { AgentSummary } from "@/features/agents/types";
+import {
+    filterAgents,
+    getAgentRoles,
+} from "@/features/agents/selectors";
 
 import styles from "./agent-explorer.module.css";
 
@@ -18,38 +22,11 @@ export function AgentExplorer({
     const [search, setSearch] = useState("");
     const [selectedRole, setSelectedRole] = useState("");
 
-    const roles = [
-        ...new Set(
-            agents
-                .map((agent) => agent.role?.name)
-                .filter(
-                    (role): role is string =>
-                        role !== undefined,
-                ),
-        ),
-    ].sort((firstRole, secondRole) =>
-        firstRole.localeCompare(secondRole, "fr"),
-    );
+    const roles = getAgentRoles(agents);
 
-    const normalizedSearch = search
-        .trim()
-        .toLocaleLowerCase("fr");
-
-    const filteredAgents = agents.filter((agent) => {
-        const normalizedName = agent.name.toLocaleLowerCase("fr");
-        const normalizedDescription =
-            agent.description.toLocaleLowerCase("fr");
-
-        const matchesSearch =
-            normalizedSearch === "" ||
-            normalizedName.includes(normalizedSearch) ||
-            normalizedDescription.includes(normalizedSearch);
-
-        const matchesRole =
-            selectedRole === "" ||
-            agent.role?.name === selectedRole;
-
-        return matchesSearch && matchesRole;
+    const filteredAgents = filterAgents(agents, {
+        search,
+        role: selectedRole,
     });
 
     const hasActiveFilters =
