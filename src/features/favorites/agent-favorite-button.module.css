@@ -1,0 +1,55 @@
+.button {
+    position: absolute;
+    z-index: 5;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 30%);
+    border-radius: 50%;
+    background: rgb(7 15 20 / 75%);
+    color: var(--foreground);
+    cursor: pointer;
+    backdrop-filter: blur(0.5rem);
+    transition:
+            color 180ms ease,
+            border-color 180ms ease,
+            background-color 180ms ease,
+            transform 180ms ease;
+}
+
+.button svg {
+    fill: transparent;
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.75;
+}
+
+.button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: scale(1.08);
+}
+
+.button.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--background);
+}
+
+.button.active svg {
+    fill: currentColor;
+}
+
+.button:focus-visible {
+    outline: 0.2rem solid var(--foreground);
+    outline-offset: 0.2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .button {
+        transition: none;
+    }
+}

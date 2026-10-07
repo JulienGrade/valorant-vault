@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AgentFavoriteButton } from "@/features/favorites/agent-favorite-button";
 
 import type { AgentSummary } from "../types";
 import styles from "./agent-card.module.css";
@@ -13,6 +14,7 @@ export function AgentCard({ agent }: AgentCardProps) {
 
     return (
         <article className={styles.card}>
+            <AgentFavoriteButton agent={agent} />
             <Link
                 className={styles.link}
                 href={`/agents/${agent.id}`}
