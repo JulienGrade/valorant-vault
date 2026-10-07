@@ -31,7 +31,9 @@ export type AgentQuery = {
     role: string;
 };
 
-export type FavoriteAgent = Pick<
-    AgentSummary,
-    "id" | "name" | "iconUrl" | "portraitUrl" | "role"
->;
+export type FavoriteAgent = {
+    uuid: string;
+    name: string;
+    iconUrl: string;
+    roleName: string | null;
+};

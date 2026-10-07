@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FavoriteButton } from "@/features/favorites/favorite-button";
 
 import { getAgent } from "@/features/agents/service";
 
@@ -99,7 +100,14 @@ export default async function AgentDetailPage({
                             </div>
                         </div>
                     ) : null}
-
+                    <FavoriteButton
+                        agent={{
+                            uuid: agent.id,
+                            name: agent.name,
+                            iconUrl: agent.iconUrl,
+                            roleName: agent.role?.name ?? null,
+                        }}
+                    />
                     <p className={styles.description}>
                         {agent.description}
                     </p>
