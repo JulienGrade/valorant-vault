@@ -1,0 +1,38 @@
+.emptyState {
+    display: grid;
+    min-height: 20rem;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-align: center;
+}
+
+.icon {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    place-items: center;
+    border: 1px solid var(--primary);
+    border-radius: 50%;
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.emptyState h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.emptyState p {
+    max-width: 34rem;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.action {
+    margin-top: 0.5rem;
+}
