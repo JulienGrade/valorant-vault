@@ -1,45 +1,104 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { TiltCard } from "@/components/ui/tilt-card";
+import type { AgentSummary } from "@/features/agents/types";
 import { AgentFavoriteButton } from "@/features/favorites/agent-favorite-button";
 
-import type { AgentSummary } from "../types";
 import styles from "./agent-card.module.css";
 
 type AgentCardProps = {
     agent: AgentSummary;
+    index: number;
 };
 
-export function AgentCard({ agent }: AgentCardProps) {
-    const imageUrl = agent.portraitUrl ?? agent.iconUrl;
+type AgentColorStyle = CSSProperties & {
+    "--agent-color-1": string;
+    "--agent-color-2": string;
+    "--agent-color-3": string;
+    "--agent-color-4": string;
+};
+
+function normalizeColor(
+    color: string | undefined,
+    fallback: string,
+): string {
+    if (!color) {
+        return fallback;
+    }
+
+    return color.startsWith("#")
+        ? color
+        : `#${color}`;
+}
+
+export function AgentCard({
+                              agent,
+                              index,
+                          }: AgentCardProps) {
+    const imageUrl =
+        agent.portraitUrl ?? agent.iconUrl;
+
+    const agentColorStyle: AgentColorStyle = {
+        "--agent-color-1": normalizeColor(
+            agent.colors[0],
+            "#ff4655",
+        ),
+        "--agent-color-2": normalizeColor(
+            agent.colors[1],
+            "#172430",
+        ),
+        "--agent-color-3": normalizeColor(
+            agent.colors[2],
+            "#304454",
+        ),
+        "--agent-color-4": normalizeColor(
+            agent.colors[3],
+            "#0f1923",
+        ),
+    };
+
+    const cardNumber = String(index + 1).padStart(
+        2,
+        "0",
+    );
 
     return (
-        <article className={styles.card}>
-            <AgentFavoriteButton agent={agent} />
+        <TiltCard
+            className={styles.card}
+            style={agentColorStyle}
+        >
             <Link
                 className={styles.link}
                 href={`/agents/${agent.id}`}
+                aria-label={`Découvrir l’agent ${agent.name}`}
             >
                 <div className={styles.visual}>
+                    <span
+                        className={styles.number}
+                        aria-hidden="true"
+                    >
+                        {cardNumber}
+                    </span>
+
                     <Image
                         className={styles.image}
                         src={imageUrl}
-                        alt={`Portrait de ${agent.name}`}
+                        alt=""
                         fill
                         sizes="
-              (min-width: 75rem) 17rem,
-              (min-width: 48rem) 30vw,
-              85vw
-            "
+                            (min-width: 75rem) 18rem,
+                            (min-width: 48rem) 33vw,
+                            100vw
+                        "
                     />
-
-                    <span className={styles.number} aria-hidden="true">
-            {agent.name.slice(0, 2).toUpperCase()}
-          </span>
                 </div>
 
                 <div className={styles.content}>
                     <p className={styles.role}>
-                        {agent.role?.name ?? "Rôle inconnu"}
+                        {agent.role?.name ??
+                            "Rôle inconnu"}
                     </p>
 
                     <h2>{agent.name}</h2>
@@ -49,10 +108,12 @@ export function AgentCard({ agent }: AgentCardProps) {
                     </p>
 
                     <span className={styles.discover}>
-            Découvrir l’agent
-          </span>
+                        Découvrir l’agent
+                    </span>
                 </div>
             </Link>
-        </article>
+
+            <AgentFavoriteButton agent={agent} />
+        </TiltCard>
     );
 }

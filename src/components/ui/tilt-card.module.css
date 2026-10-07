@@ -1,0 +1,82 @@
+.scene {
+    min-width: 0;
+    height: 100%;
+    perspective: 75rem;
+}
+
+.card {
+    --rotate-x: 0deg;
+    --rotate-y: 0deg;
+    --pointer-x: 50%;
+    --pointer-y: 50%;
+    --glare-opacity: 0;
+    --card-scale: 1;
+    --card-lift: 0rem;
+
+    position: relative;
+    height: 100%;
+    transform:
+            translateY(var(--card-lift))
+            rotateX(var(--rotate-x))
+            rotateY(var(--rotate-y))
+            scale3d(
+                    var(--card-scale),
+                    var(--card-scale),
+                    var(--card-scale)
+            );
+    transform-origin: center;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 180ms ease-out;
+}
+
+.card:hover {
+    --card-scale: 1.02;
+    --card-lift: -0.35rem;
+}
+
+.glare {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+            circle at var(--pointer-x) var(--pointer-y),
+            rgb(255 255 255 / 32%),
+            rgb(255 255 255 / 9%) 20%,
+            transparent 48%
+    );
+    opacity: var(--glare-opacity);
+    pointer-events: none;
+    transition: opacity 180ms ease;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .card,
+    .card:hover {
+        --card-scale: 1;
+        --card-lift: 0rem;
+
+        transform: none;
+    }
+
+    .glare {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card:hover {
+        --card-scale: 1;
+        --card-lift: 0rem;
+
+        transform: none;
+        transition: none;
+    }
+
+    .glare {
+        display: none;
+        transition: none;
+    }
+}

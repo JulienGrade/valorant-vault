@@ -1,18 +1,22 @@
-import type { AgentSummary } from "../types";
-import { AgentCard } from "./agent-card";
+import { AgentCard } from "@/features/agents/components/agent-card";
+import type { AgentSummary } from "@/features/agents/types";
+
 import styles from "./agent-grid.module.css";
 
 type AgentGridProps = {
     agents: AgentSummary[];
 };
 
-export function AgentGrid({ agents }: AgentGridProps) {
+export function AgentGrid({
+                              agents,
+                          }: AgentGridProps) {
     return (
         <div className={styles.grid}>
-            {agents.map((agent) => (
+            {agents.map((agent, index) => (
                 <AgentCard
-                    key={agent.id}
                     agent={agent}
+                    index={index}
+                    key={agent.id}
                 />
             ))}
         </div>
