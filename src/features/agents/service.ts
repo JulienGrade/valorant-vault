@@ -1,28 +1,31 @@
 import "server-only";
 
-import { z } from "zod";
+import { z, type ZodType } from "zod";
 
-import { fetchValorantApi } from "./api";
-import {
-    ExternalApiError,
-    InvalidApiDataError,
-} from "./errors";
-import {
-    toAgentDetail,
-    toAgentSummary,
-} from "./mappers";
+import { fetchValorantApi } from "@/features/agents/api";
 import {
     agentDetailResponseSchema,
     agentListResponseSchema,
-} from "./schemas";
+} from "@/features/agents/schemas";
 import type {
     AgentDetail,
     AgentSummary,
-} from "./types";
+} from "@/features/agents/types";
+import {
+    toAgentDetail,
+    toAgentSummary,
+} from "@/features/agents/mappers";
+import {
+    ExternalApiError,
+    InvalidApiDataError,
+} from "@/features/agents/errors";
 
 function parseOrThrow<T>(
-    result: z.ZodSafeParseResult<T>,
+    schema: ZodType<T>,
+    data: unknown,
 ): T {
+    const result = schema.safeParse(data);
+
     if (!result.success) {
         throw new InvalidApiDataError(
             `La réponse de Valorant-API est invalide : ${z.prettifyError(
@@ -45,7 +48,8 @@ export async function getAgents(): Promise<AgentSummary[]> {
     );
 
     const response = parseOrThrow(
-        agentListResponseSchema.safeParse(json),
+        agentListResponseSchema,
+        json,
     );
 
     return response.data
@@ -64,18 +68,19 @@ export async function getAgent(
 ): Promise<AgentDetail | null> {
     try {
         const json = await fetchValorantApi(
-            `agents/${encodeURIComponent(id)}`,
+            `agents/${id}`,
         );
 
         const response = parseOrThrow(
-            agentDetailResponseSchema.safeParse(json),
+            agentDetailResponseSchema,
+            json,
         );
 
         return toAgentDetail(response.data);
     } catch (error) {
         if (
             error instanceof ExternalApiError &&
-            error.status === 404
+            (error.status === 400 || error.status === 404)
         ) {
             return null;
         }
