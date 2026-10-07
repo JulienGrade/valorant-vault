@@ -6,10 +6,15 @@
 .filters {
     display: grid;
     gap: 1rem;
+    align-items: end;
     padding: 1.25rem;
-    border: 1px solid var(--border);
+    border: 0.0625rem solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
+    box-shadow: var(
+            --shadow,
+            0 1.25rem 3rem rgb(0 0 0 / 18%)
+    );
 }
 
 .field {
@@ -17,79 +22,83 @@
     gap: 0.5rem;
 }
 
-.field label {
+.label {
     color: var(--muted);
-    font-size: 0.8rem;
-    font-weight: 800;
+    font-size: 0.75rem;
+    font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
-.field input,
-.field select {
+.control {
     width: 100%;
     min-height: 3rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    outline: none;
+    padding: 0.7rem 0.9rem;
+    border: 0.0625rem solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--text);
     background: var(--background);
-    color: var(--foreground);
-    font: inherit;
-    transition:
-            border-color 180ms ease,
-            box-shadow 180ms ease;
 }
 
-.field input::placeholder {
-    color: var(--muted);
-}
-
-.field input:focus,
-.field select:focus {
+.control:hover {
     border-color: var(--primary);
-    box-shadow: 0 0 0 0.2rem rgb(255 70 85 / 20%);
+}
+
+.control:focus {
+    border-color: var(--primary);
 }
 
 .resetButton {
     min-height: 3rem;
-    padding: 0.75rem 1.25rem;
-    align-self: end;
-    border: 1px solid var(--border);
-    border-radius: 0.75rem;
-    background: transparent;
-    color: var(--foreground);
-    font: inherit;
+    padding: 0.7rem 1rem;
+    border: 0.0625rem solid var(--border);
+    border-radius: 0.5rem;
+    color: var(--text);
+    background: var(--surface-soft);
     font-weight: 800;
     cursor: pointer;
+    transition:
+            border-color 180ms ease,
+            color 180ms ease,
+            transform 180ms ease;
 }
 
 .resetButton:hover:not(:disabled) {
     border-color: var(--primary);
     color: var(--primary);
+    transform: translateY(-0.125rem);
 }
 
 .resetButton:disabled {
+    opacity: 0.45;
     cursor: not-allowed;
-    opacity: 0.4;
 }
 
-.resultCount {
+.summary {
+    margin: 0;
     color: var(--muted);
     font-size: 0.9rem;
-    font-weight: 700;
+}
+
+.results {
+    min-width: 0;
 }
 
 @media (min-width: 48rem) {
     .filters {
-        grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr) auto;
-        align-items: end;
+        grid-template-columns:
+            minmax(0, 1.5fr)
+            minmax(12rem, 0.8fr)
+            auto;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .field input,
-    .field select {
+    .resetButton {
         transition: none;
+    }
+
+    .resetButton:hover:not(:disabled) {
+        transform: none;
     }
 }
