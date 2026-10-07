@@ -1,0 +1,9 @@
+.comfortable {
+    --catalog-card-min-width: 17rem;
+    --catalog-grid-gap: 1.5rem;
+}
+
+.compact {
+    --catalog-card-min-width: 13rem;
+    --catalog-grid-gap: 1rem;
+}

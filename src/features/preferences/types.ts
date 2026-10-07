@@ -6,3 +6,12 @@ export type ThemePreference =
 export type ResolvedTheme =
     | "dark"
     | "light";
+
+export type CatalogDensity =
+    | "comfortable"
+    | "compact";
+
+export type CatalogDensityActionState = {
+    status: "idle" | "success" | "error";
+    message: string;
+};
